@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Purchasing Dashboard — Grocery Warehouse Management System</title>
+
+    <link rel="stylesheet" href="purchasing.css">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-scroll">
+
+            <div class="sidebar-brand">
+                <div class="login-logo small">GW</div>
+                <div class="sidebar-brand-text">
+                    <h2>Grocery WH</h2>
+                    <span>Purchasing Panel</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <button class="nav-link active" data-target="section-dashboard" title="Dashboard">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+
+                <div class="nav-group-label">Purchasing</div>
+
+                <button class="nav-link" data-target="section-po" title="Purchase Orders">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Purchase Orders</span>
+                </button>
+
+                <button class="nav-link" data-target="section-pr" title="Purchase Returns">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Purchase Returns</span>
+                </button>
+
+                <div class="nav-group-label">Reference</div>
+
+                <button class="nav-link" data-target="section-product" title="Products">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Products</span>
+                </button>
+
+                <button class="nav-link" data-target="section-stock" title="Stock Levels">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Stock Levels</span>
+                </button>
+
+                <button class="nav-link" data-target="section-supplier" title="Suppliers">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Suppliers</span>
+                </button>
+
+                <button class="nav-link" data-target="section-category" title="Categories">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                            <rect x="1" y="3" width="22" height="5"></rect>
+                            <line x1="10" y1="12" x2="14" y2="12"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Categories</span>
+                </button>
+
+            </nav>
+
+        </div>
+        <!-- /.sidebar-scroll -->
+
+        <div class="sidebar-profile" id="sidebar-profile">
+            <button
+                class="sidebar-profile-trigger"
+                id="sidebar-profile-trigger"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                <span class="sidebar-profile-avatar" id="sidebar-profile-avatar">P</span>
+                <span class="sidebar-profile-info">
+                    <span class="sidebar-profile-name" id="sidebar-profile-name">Purchasing</span>
+                    <span class="sidebar-profile-role" id="sidebar-profile-role">Purchasing Staff</span>
+                </span>
+                <span class="sidebar-profile-caret" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </span>
+            </button>
+
+            <div class="sidebar-profile-menu" id="sidebar-profile-menu" role="menu">
+                <button class="sidebar-profile-logout" id="btn-logout" role="menuitem">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Log Out
+                </button>
+            </div>
+        </div>
+
+        <button class="sidebar-toggle" id="sidebar-toggle" title="Collapse sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+
+    </aside>
+
+
+    <div class="main-area">
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+                <button class="hamburger-btn" id="hamburger-btn" title="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+
+            <div class="topbar-user">
+                <span id="welcome-text">Welcome</span>
+            </div>
+
+        </header>
+
+
+        <main class="content">
+
+
+            <section id="section-dashboard" class="page-section active-section">
+
+                <div class="stat-grid">
+
+                    <div class="stat-card stat-card-mypo clickable-card"
+                         role="button" tabindex="0" title="View My Purchase Orders"
+                         onclick="goToSection('section-po')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-po');}">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">My Purchase Orders</span>
+                            <span class="stat-value" id="stat-my-po">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-pendingpo clickable-card"
+                         role="button" tabindex="0" title="View Purchase Orders"
+                         onclick="goToSection('section-po')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-po');}">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Pending Purchase Orders</span>
+                            <span class="stat-value" id="stat-pending-po">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-returns clickable-card"
+                         role="button" tabindex="0" title="View Purchase Returns"
+                         onclick="goToSection('section-pr')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-pr');}">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Purchase Returns</span>
+                            <span class="stat-value" id="stat-returns">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-products clickable-card"
+                         role="button" tabindex="0" title="View Products"
+                         onclick="goToSection('section-product')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-product');}">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Products</span>
+                            <span class="stat-value" id="stat-products">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-suppliers clickable-card"
+                         role="button" tabindex="0" title="View Suppliers"
+                         onclick="goToSection('section-supplier')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-supplier');}">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <line x1="20" y1="8" x2="20" y2="14"></line>
+                                <line x1="23" y1="11" x2="17" y2="11"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Suppliers</span>
+                            <span class="stat-value" id="stat-suppliers">0</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="charts-grid">
+
+                    <div class="panel chart-panel clickable-card"
+                         role="button" tabindex="0" title="View Categories"
+                         onclick="goToSection('section-category')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-category');}">
+                        <div class="panel-header">
+                            <h3>Products by Category</h3>
+                            <span class="panel-subtitle" id="chartCategorySubtitle">Top 6 of 0 categories</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chart-products-category"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="panel chart-panel clickable-card"
+                         role="button" tabindex="0" title="View Purchase Orders"
+                         onclick="goToSection('section-po')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('section-po');}">
+                        <div class="panel-header">
+                            <h3>Purchase Orders by Status</h3>
+                            <span class="panel-subtitle">All records</span>
+                        </div>
+                        <div class="chart-container chart-container-doughnut">
+                            <canvas id="chart-po-status"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-grid">
+
+                    <div class="panel">
+
+                        <h3>Needs reordering</h3>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th class="num">On hand</th>
+                                    <th class="num">Min level</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-low-stock"></tbody>
+                        </table>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <h3>Latest purchase orders</h3>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>PO</th>
+                                    <th>Supplier</th>
+                                    <th>Date</th>
+                                    <th class="num">Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-recent-po"></tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section id="section-po" class="page-section">
+
+                <div class="filter-bar">
+
+                    <div class="filter-field">
+                        <label for="po-search">Search</label>
+                        <input type="text" id="po-search" placeholder="PO number or supplier">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="po-filter-category">Category</label>
+                        <select id="po-filter-category">
+                            <option value="">All categories</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="po-date-from">PO date from</label>
+                        <input type="date" id="po-date-from">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="po-date-to">PO date to</label>
+                        <input type="date" id="po-date-to">
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn btn-outline" onclick="clearPOFilters()">
+                            Clear filters
+                        </button>
+
+                        <button class="btn btn-primary" onclick="openPOModal()">
+                            + New Purchase Order
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>PO ID</th>
+                            <th>PO Date</th>
+                            <th>Expected</th>
+                            <th>Supplier</th>
+                            <th class="num">Items</th>
+                            <th class="num">Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-po"></tbody>
+                </table>
+
+            </section>
+
+
+            <section id="section-pr" class="page-section">
+
+                <div class="filter-bar">
+
+                    <div class="filter-field">
+                        <label for="pr-search">Search</label>
+                        <input type="text" id="pr-search" placeholder="Supplier, PO number or reason">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="pr-filter-status">Status</label>
+                        <select id="pr-filter-status">
+                            <option value="">All statuses</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" onclick="openPRModal()">
+                            + New Purchase Return
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Return ID</th>
+                            <th>Date</th>
+                            <th>PO</th>
+                            <th>Supplier</th>
+                            <th class="num">Qty</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-pr"></tbody>
+                </table>
+
+            </section>
+
+
+            <section id="section-product" class="page-section">
+
+                <div class="section-toolbar">
+                    <input type="text" class="search-input" id="search-product"
+                           placeholder="Search products...">
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Barcode</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Unit</th>
+                            <th class="num">On hand</th>
+                            <th class="num">Min stock</th>
+                            <th>Bin</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-product"></tbody>
+                </table>
+
+            </section>
+
+
+            <section id="section-stock" class="page-section">
+
+                <div class="section-toolbar">
+                    <input type="text" class="search-input" id="search-stock"
+                           placeholder="Search stock...">
+
+                    <button class="btn btn-outline" id="btn-low-only"
+                            onclick="toggleLowOnly()">
+                        Show only low stock
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th class="num">On hand</th>
+                            <th class="num">Min level</th>
+                            <th>Reorder?</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-stock"></tbody>
+                </table>
+
+            </section>
+
+
+            <section id="section-supplier" class="page-section">
+
+                <div class="section-toolbar">
+                    <input type="text" class="search-input" id="search-supplier"
+                           placeholder="Search suppliers...">
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Contact person</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-supplier"></tbody>
+                </table>
+
+            </section>
+
+
+            <section id="section-category" class="page-section">
+
+                <div class="section-toolbar">
+                    <input type="text" class="search-input" id="search-category"
+                           placeholder="Search categories...">
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th class="num">Products</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-category"></tbody>
+                </table>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+</div>
+
+<div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+
+<div id="po-modal-overlay" class="modal-overlay">
+
+    <div class="modal-box wide-modal-box">
+
+        <div class="modal-header">
+            <h3 id="po-modal-title">New Purchase Order</h3>
+            <button class="modal-close" onclick="closePOModal()">&times;</button>
+        </div>
+
+        <div class="modal-body" id="po-modal-body"></div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closePOModal()">Cancel</button>
+            <button class="btn btn-primary" id="btn-save-po" onclick="savePO()">
+                Save purchase order
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="pr-modal-overlay" class="modal-overlay">
+
+    <div class="modal-box wide-modal-box">
+
+        <div class="modal-header">
+            <h3 id="pr-modal-title">New Purchase Return</h3>
+            <button class="modal-close" onclick="closePRModal()">&times;</button>
+        </div>
+
+        <div class="modal-body" id="pr-modal-body"></div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closePRModal()">Cancel</button>
+            <button class="btn btn-primary" id="btn-save-pr" onclick="savePR()">
+                Save purchase return
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="view-modal-overlay" class="modal-overlay">
+
+    <div class="modal-box wide-modal-box">
+
+        <div class="modal-header">
+            <h3 id="view-modal-title">Details</h3>
+            <button class="modal-close" onclick="closeViewModal()">&times;</button>
+        </div>
+
+        <div class="modal-body" id="view-modal-body">Loading...</div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeViewModal()">Close</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="confirm-modal-overlay" class="modal-overlay">
+
+    <div class="modal-box confirm-modal-box">
+
+        <div class="modal-header">
+            <h3>Confirm Action</h3>
+            <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <p class="confirm-message" id="confirm-modal-message"></p>
+            <p class="confirm-warning" id="confirm-modal-warning"></p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeConfirmModal()">Cancel</button>
+            <button class="btn btn-danger" id="btn-confirm-action">Confirm</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script src="purchasing.js"></script>
+
+</body>
+</html>

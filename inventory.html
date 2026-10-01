@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Staff — Grocery Warehouse Management System</title>
+
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+>
+<link rel="stylesheet" href="inventory.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar" id="sidebar">
+
+        <!-- ✅ Same pattern as admin: brand + nav live inside .sidebar-scroll,
+             which owns the overflow-y:auto / overflow-x:hidden. .sidebar
+             itself is overflow:visible so #sidebar-toggle (positioned half
+             outside the sidebar) is never clipped. -->
+        <div class="sidebar-scroll">
+
+            <div class="sidebar-brand">
+                <div class="login-logo small">GW</div>
+                <div class="sidebar-brand-text">
+                    <h2>Grocery WH</h2>
+                    <span>Inventory Staff</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <button class="nav-link active" data-section="dashboard-section" title="Dashboard">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+
+                <div class="nav-group-label">INVENTORY</div>
+
+                <button class="nav-link" data-section="products-section" title="Products">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Products</span>
+                </button>
+
+                <button class="nav-link" data-section="categories-section" title="Categories">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41L11 22.99a2 2 0 0 1-2.83 0L1 16.83a2 2 0 0 1 0-2.83L9.59 5.41A2 2 0 0 1 11 4.83H20a1 1 0 0 1 1 1v8.58a2 2 0 0 1-.41 1z"></path>
+                            <circle cx="14.5" cy="8.5" r="1.5"></circle>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Categories</span>
+                </button>
+
+                <button class="nav-link" data-section="locations-section" title="Storage Location">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Storage Location</span>
+                </button>
+
+                <button class="nav-link" data-section="stock-section" title="Current Stock">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Current Stock</span>
+                </button>
+
+                <button class="nav-link" data-section="lowstock-section" title="Low Stock">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Low Stock</span>
+                </button>
+
+                <div class="nav-group-label">TRANSACTIONS</div>
+
+                <button class="nav-link" data-section="adjustments-section" title="Inventory Adjustments">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Inventory Adjustments</span>
+                </button>
+
+                <button class="nav-link" data-section="returns-section" title="Stock Returns">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 14 4 9 9 4"></polyline>
+                            <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Stock Returns</span>
+                </button>
+
+            </nav>
+
+        </div>
+        <!-- /.sidebar-scroll -->
+
+        <!-- ✅ PROFILE + LOGOUT — bottom of sidebar, direct child of
+             .sidebar (not the scroll wrapper) so it stays pinned and
+             never scrolls away with the nav list. Hover or click/tap
+             opens the small menu; Log Out asks for confirmation via
+             the existing confirm modal before actually logging out. -->
+        <div class="sidebar-profile" id="sidebar-profile">
+            <button
+                class="sidebar-profile-trigger"
+                id="sidebar-profile-trigger"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                <span class="sidebar-profile-avatar" id="sidebar-profile-avatar">I</span>
+                <span class="sidebar-profile-info">
+                    <span class="sidebar-profile-name" id="sidebar-profile-name">Inventory Staff</span>
+                    <span class="sidebar-profile-role" id="sidebar-profile-role">Staff</span>
+                </span>
+                <span class="sidebar-profile-caret" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </span>
+            </button>
+
+            <div class="sidebar-profile-menu" id="sidebar-profile-menu" role="menu">
+                <button class="sidebar-profile-logout" id="btn-logout" role="menuitem">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Log Out
+                </button>
+            </div>
+        </div>
+
+        <!-- ✅ SIDEBAR COLLAPSE BUTTON — direct child of .sidebar (not the
+             scroll wrapper) so it never gets clipped by inner overflow.
+             Floats half outside the sidebar, vertically centered on the
+             icon list, same as admin. -->
+        <button
+            class="sidebar-toggle"
+            id="sidebar-toggle"
+            title="Collapse sidebar"
+        >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+
+    </aside>
+
+
+    <div class="main-area">
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+
+                <button
+                    class="hamburger-btn"
+                    id="hamburger-btn"
+                    title="Toggle menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+
+            <div class="topbar-user">
+                <span id="topbar-username">Loading…</span>
+            </div>
+
+        </header>
+
+
+        <main class="content">
+
+            <section id="dashboard-section" class="page-section active-section">
+
+                <div class="stat-grid">
+
+                    <div class="stat-card stat-card-products clickable-card"
+                         role="button" tabindex="0" title="View Products"
+                         onclick="goToSection('products-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('products-section');}">
+                        <div class="stat-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Products</span>
+                            <span class="stat-value" id="stat-products">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-categories clickable-card"
+                         role="button" tabindex="0" title="View Categories"
+                         onclick="goToSection('categories-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('categories-section');}">
+                        <div class="stat-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.59 13.41L11 22.99a2 2 0 0 1-2.83 0L1 16.83a2 2 0 0 1 0-2.83L9.59 5.41A2 2 0 0 1 11 4.83H20a1 1 0 0 1 1 1v8.58a2 2 0 0 1-.41 1z"></path>
+                                <circle cx="14.5" cy="8.5" r="1.5"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Categories</span>
+                            <span class="stat-value" id="stat-categories">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-locations clickable-card"
+                         role="button" tabindex="0" title="View Storage Location"
+                         onclick="goToSection('locations-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('locations-section');}">
+                        <div class="stat-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Aisles / Shelves / Bins</span>
+                            <span class="stat-value" id="stat-locations">0 / 0 / 0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-adjustments clickable-card"
+                         role="button" tabindex="0" title="View Inventory Adjustments"
+                         onclick="goToSection('adjustments-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('adjustments-section');}">
+                        <div class="stat-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Pending Adjustments</span>
+                            <span class="stat-value" id="stat-pending-adj">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card-returns clickable-card"
+                         role="button" tabindex="0" title="View Stock Returns"
+                         onclick="goToSection('returns-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('returns-section');}">
+                        <div class="stat-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 14 4 9 9 4"></polyline>
+                                <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Pending Returns</span>
+                            <span class="stat-value" id="stat-pending-ret">0</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="charts-grid">
+
+                    <div class="panel chart-panel clickable-card"
+                         role="button" tabindex="0" title="View Categories"
+                         onclick="goToSection('categories-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('categories-section');}">
+                        <div class="panel-header">
+                            <h3>Products by Category</h3>
+                            <span class="panel-subtitle" id="chartCategorySubtitle">Top 6 of 0 categories</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chart-products-category"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="panel chart-panel clickable-card"
+                         role="button" tabindex="0" title="View Low Stock"
+                         onclick="goToSection('lowstock-section')"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('lowstock-section');}">
+                        <div class="panel-header">
+                            <h3>Low Stock Severity</h3>
+                            <span class="panel-subtitle">Across all products</span>
+                        </div>
+                        <div class="chart-container chart-container-doughnut">
+                            <canvas id="chart-lowstock-severity"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-grid">
+
+                    <div class="panel">
+                        <h3>Low Stock Watchlist</h3>
+                        <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Product</th><th>Min</th></tr>
+                            </thead>
+                            <tbody id="dashboard-lowstock">
+                                <tr><td colspan="2" class="empty-row">Loading…</td></tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Recent Activity</h3>
+                        <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Date</th><th>Product</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="dashboard-adjustments">
+                                <tr><td colspan="3" class="empty-row">Loading…</td></tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section id="products-section" class="page-section">
+
+                <div class="section-toolbar">
+
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-products"
+                        placeholder="Search products..."
+                    >
+
+                    <div class="toolbar-actions">
+                        <button class="btn btn-outline-secondary" onclick="clearProductFilters()">
+                            Clear
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-field">
+                        <label for="filter-products-category">Category</label>
+                        <select id="filter-products-category">
+                            <option value="">All categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-products-unit">Unit</label>
+                        <select id="filter-products-unit">
+                            <option value="">All units</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-count" id="products-count"></div>
+
+                <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Barcode</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Unit</th>
+                            <th>Location</th>
+                            <th>Min Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-tbody">
+                        <tr><td colspan="6" class="empty-row">Loading…</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </section>
+
+
+            <section id="categories-section" class="page-section">
+
+                <div class="section-toolbar">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-categories"
+                        placeholder="Search categories..."
+                    >
+                    <div class="toolbar-actions">
+                        <button class="btn btn-outline-secondary" onclick="clearCategoryFilters()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-count" id="categories-count"></div>
+
+                <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Category Name</th></tr>
+                    </thead>
+                    <tbody id="categories-tbody">
+                        <tr><td class="empty-row">Loading…</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </section>
+
+
+            <section id="locations-section" class="page-section">
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="aisles-panel">Aisles</button>
+                    <button class="tab-btn" data-tab="shelves-panel">Shelves</button>
+                    <button class="tab-btn" data-tab="bins-panel">Bins</button>
+                </div>
+
+                <div class="tab-panel active-tab" id="aisles-panel">
+                    <div class="section-toolbar">
+                        <input
+                            type="text"
+                            class="search-input"
+                            id="search-aisles"
+                            placeholder="Search aisle..."
+                        >
+                        <div class="toolbar-actions">
+                            <button class="btn btn-outline-secondary" onclick="clearAisleFilters()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-count" id="aisles-count"></div>
+
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th>Aisle Code</th></tr></thead>
+                        <tbody id="aisles-tbody">
+                            <tr><td class="empty-row">Loading…</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="shelves-panel">
+                    <div class="section-toolbar">
+                        <input
+                            type="text"
+                            class="search-input"
+                            id="search-shelves"
+                            placeholder="Search shelf..."
+                        >
+                        <div class="filter-field">
+                            <label for="filter-shelves-aisle">Aisle</label>
+                            <select id="filter-shelves-aisle">
+                                <option value="">All aisles</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn btn-outline-secondary" onclick="clearShelfFilters()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-count" id="shelves-count"></div>
+
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th>Aisle</th><th>Shelf Code</th></tr></thead>
+                        <tbody id="shelves-tbody">
+                            <tr><td colspan="2" class="empty-row">Loading…</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="bins-panel">
+                    <div class="section-toolbar">
+                        <input
+                            type="text"
+                            class="search-input"
+                            id="search-bins"
+                            placeholder="Search bin..."
+                        >
+                        <div class="filter-field">
+                            <label for="filter-bins-aisle">Aisle</label>
+                            <select id="filter-bins-aisle">
+                                <option value="">All aisles</option>
+                            </select>
+                        </div>
+                        <div class="filter-field">
+                            <label for="filter-bins-shelf">Shelf</label>
+                            <select id="filter-bins-shelf">
+                                <option value="">All shelves</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn btn-outline-secondary" onclick="clearBinFilters()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-count" id="bins-count"></div>
+
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th>Aisle</th><th>Shelf</th><th>Bin Code</th></tr></thead>
+                        <tbody id="bins-tbody">
+                            <tr><td colspan="3" class="empty-row">Loading…</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <section id="stock-section" class="page-section">
+
+                <div class="section-toolbar">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-stock"
+                        placeholder="Search stock..."
+                    >
+                    <div class="toolbar-actions">
+                        <button class="btn btn-outline-secondary" onclick="clearStockFilters()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-field">
+                        <label for="filter-stock-category">Category</label>
+                        <select id="filter-stock-category">
+                            <option value="">All categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-stock-level">Stock Status</label>
+                        <select id="filter-stock-level">
+                            <option value="">All</option>
+                            <option value="low">Low stock only</option>
+                            <option value="ok">Above min only</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-count" id="stock-count"></div>
+
+                <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th>Unit</th>
+                            <th>On Hand</th>
+                            <th>Min Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stock-tbody">
+                        <tr><td colspan="6" class="empty-row">Loading…</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </section>
+
+
+            <section id="lowstock-section" class="page-section">
+
+                <div class="section-toolbar">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-lowstock"
+                        placeholder="Search low stock..."
+                    >
+                    <div class="toolbar-actions">
+                        <button class="btn btn-outline-secondary" onclick="clearLowStockFilters()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-field">
+                        <label for="filter-lowstock-category">Category</label>
+                        <select id="filter-lowstock-category">
+                            <option value="">All categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-lowstock-severity">Severity</label>
+                        <select id="filter-lowstock-severity">
+                            <option value="">All</option>
+                            <option value="critical">Critical (0 stock)</option>
+                            <option value="low">Low (below min)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-count" id="lowstock-count"></div>
+
+                <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th>On Hand</th>
+                            <th>Min Stock</th>
+                            <th>Shortage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lowstock-tbody">
+                        <tr><td colspan="6" class="empty-row">Loading…</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </section>
+
+
+            <section id="adjustments-section" class="page-section">
+
+                <div class="section-toolbar">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-adjustments"
+                        placeholder="Search adjustments..."
+                    >
+                    <div class="toolbar-actions">
+                        <button class="btn btn-outline-secondary" onclick="clearAdjustmentFilters()">
+                            Clear
+                        </button>
+                        <button class="btn btn-primary" id="btn-add-adjustment">
+                            + New Adjustment
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-field">
+                        <label for="filter-adjustments-status">Status</label>
+                        <select id="filter-adjustments-status">
+                            <option value="">All statuses</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-adjustments-type">Type</label>
+                        <select id="filter-adjustments-type">
+                            <option value="">All types</option>
+                            <option value="Increase">Increase</option>
+                            <option value="Decrease">Decrease</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-adjustments-from">From</label>
+                        <input type="date" id="filter-adjustments-from">
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-adjustments-to">To</label>
+                        <input type="date" id="filter-adjustments-to">
+                    </div>
+                </div>
+
+                <div class="filter-count" id="adjustments-count"></div>
+
+                <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>System</th>
+                            <th>Actual</th>
+                            <th>Adjustment</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adjustments-tbody">
+                        <tr><td colspan="9" class="empty-row">Loading…</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </section>
+
+
+            <section id="returns-section" class="page-section">
+
+                <div class="section-toolbar">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-returns"
+                        placeholder="Search returns..."
+                    >
+                    <div class="toolbar-actions">
+                        <button class="btn btn-outline-secondary" onclick="clearReturnFilters()">
+                            Clear
+                        </button>
+                        <button class="btn btn-primary" id="btn-add-return">
+                            + New Stock Return
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-field">
+                        <label for="filter-returns-status">Status</label>
+                        <select id="filter-returns-status">
+                            <option value="">All statuses</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-returns-from">From</label>
+                        <input type="date" id="filter-returns-from">
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-returns-to">To</label>
+                        <input type="date" id="filter-returns-to">
+                    </div>
+                </div>
+
+                <div class="filter-count" id="returns-count"></div>
+
+                <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Recorded By</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Status</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="returns-tbody">
+                        <tr><td colspan="7" class="empty-row">Loading…</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+
+<div class="modal-overlay" id="adjustment-modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="adjustment-modal-title">New Inventory Adjustment</h3>
+            <button class="modal-close" data-close="adjustment-modal-overlay">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="adj-id">
+            <div class="form-group">
+                <label for="adj-product">Product</label>
+                <select id="adj-product"></select>
+            </div>
+            <div class="form-group">
+                <label for="adj-system">System Quantity</label>
+                <input
+                    type="number"
+                    id="adj-system"
+                    min="0"
+                    value="0"
+                    readonly
+                >
+                <span class="field-hint">Auto-computed based on approved transactions.</span>
+            </div>
+            <div class="form-group">
+                <label for="adj-actual">Actual Physical Quantity</label>
+                <input type="number" id="adj-actual" min="0" value="0">
+            </div>
+            <div class="form-group">
+                <label>Preview</label>
+                <div id="adj-preview" class="adj-preview"></div>
+            </div>
+            <div class="form-group">
+                <label for="adj-type">Adjustment Type</label>
+                <select id="adj-type">
+                    <option value="Increase">Increase</option>
+                    <option value="Decrease">Decrease</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="adj-reason">Reason</label>
+                <textarea id="adj-reason" rows="3" placeholder="Explain the discrepancy…"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="adj-status">Status</label>
+                <select id="adj-status"></select>
+                <span class="field-hint">Set to "Pending" to submit for management review.</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline-secondary" data-close="adjustment-modal-overlay">Cancel</button>
+            <button class="btn btn-primary" id="btn-save-adjustment">Save</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-overlay" id="return-modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="return-modal-title">New Stock Return</h3>
+            <button class="modal-close" data-close="return-modal-overlay">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="ret-id">
+            <div class="form-group">
+                <label for="ret-product">Product</label>
+                <select id="ret-product"></select>
+            </div>
+            <div class="form-group">
+                <label for="ret-quantity">Quantity</label>
+                <input type="number" id="ret-quantity" min="1" value="1">
+            </div>
+            <div class="form-group">
+                <label for="ret-reason">Reason</label>
+                <textarea id="ret-reason" rows="3"
+                          placeholder="Reason for returning stock (damaged, expired, etc.)…"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="ret-status">Status</label>
+                <select id="ret-status"></select>
+                <span class="field-hint">Set to "Pending" to submit for management review.</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline-secondary" data-close="return-modal-overlay">Cancel</button>
+            <button class="btn btn-primary" id="btn-save-return">Save</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-overlay" id="confirm-modal-overlay">
+    <div class="modal-box confirm-modal-box">
+        <div class="modal-header">
+            <h3>Confirm Action</h3>
+            <button class="modal-close" data-close="confirm-modal-overlay">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="confirm-message" id="confirm-message">Are you sure?</p>
+            <p class="confirm-warning">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline-secondary" data-close="confirm-modal-overlay">Cancel</button>
+            <button class="btn btn-danger" id="btn-confirm-yes">Yes, Continue</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="inventory.js"></script>
+</body>
+</html>

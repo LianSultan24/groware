@@ -1,0 +1,1173 @@
+/* =========================================================
+   INVENTORY STAFF — FULL STYLES (SAME AS ADMIN)
+========================================================= */
+
+:root {
+    --color-green-bg: #D9F5E3;
+    --color-green-card: #F1FDF5;
+    --color-green-border: #A6DDBB;
+    --color-green-text: #052E16;
+    --color-green-muted: #166534;
+
+    --color-forest: #12331F;
+
+    --status-instock: #16A34A;
+    --status-instock-bg: #DCFCE7;
+    --status-instock-text: #166534;
+
+    --status-low: #F59E0B;
+    --status-low-bg: #FEF3C7;
+    --status-low-text: #92400E;
+
+    --status-out: #DC2626;
+    --status-out-bg: #FEE2E2;
+    --status-out-text: #991B1B;
+
+    /* ✅ Extra accents used for the colored stat-card icons and
+       chart top-borders, so the dashboard isn't monochrome. */
+    --accent-blue: #2E6FA3;
+    --accent-plum: #7C5AA6;
+
+    --radius: 12px;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--color-green-bg);
+    color: var(--color-green-text);
+    min-height: 100%;
+}
+
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ✅ .sidebar is sticky and locked to the viewport height (100vh),
+   INSTEAD of stretching to match .main-area's content height.
+
+   Before: .app-shell (flex row, align-items:stretch by default)
+   made .sidebar as tall as the tallest section's content. The
+   Dashboard (charts + several tables) is much taller than other
+   sections, so on Dashboard the sidebar itself became very tall,
+   which:
+     1) pushed #sidebar-toggle's "top:50%" center way down (it
+        stopped lining up with where it sits on shorter pages),
+     2) pushed .sidebar-profile (Log Out) below the fold entirely,
+     3) meant there was only one page-level scrollbar, so scrolling
+        the content also dragged the sidebar along with it.
+
+   Now: height is pinned to 100vh and position is sticky, so the
+   sidebar's own height never depends on which section is active.
+   #sidebar-toggle is always centered on the same 100vh box, the
+   profile/logout block always stays pinned at its bottom edge, and
+   .sidebar-scroll (overflow-y:auto) scrolls the nav list on its
+   own — independently from the page/content scroll. */
+.sidebar {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+    width: 240px;
+    background: var(--color-forest);
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.24s cubic-bezier(.4,0,.2,1);
+}
+
+.sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 16px 0;
+    /* ✅ FIX: hide the visible scrollbar track/thumb while keeping
+       the element fully scrollable (mouse wheel, touch, keyboard,
+       trackpad). scrollbar-width:none covers Firefox; the
+       ::-webkit-scrollbar rule below covers Chrome/Edge/Safari. */
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* old Edge / IE */
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari, new Edge */
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 16px;
+}
+
+.sidebar-brand h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.sidebar-brand span {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.login-logo.small {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: var(--color-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 16px;
+}
+
+.nav-group-label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 14px 10px 6px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    width: 100%;
+    transition: background 0.15s;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+}
+
+.nav-link.active {
+    background: #FFFFFF;
+    color: var(--color-forest);
+    font-weight: 700;
+}
+
+.nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nav-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ✅ PROFILE MENU — pinned at the bottom of the sidebar, opens on
+   hover (desktop) and click/tap (touch, handled in JS via
+   .menu-open). Log Out lives inside this menu, same as admin. */
+.sidebar-profile {
+    position: relative;
+    flex-shrink: 0;
+    padding: 10px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sidebar-profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #FFFFFF;
+    transition: background 0.15s;
+}
+
+.sidebar-profile-trigger:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2E6FA3, #12331F);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.sidebar-profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+}
+
+.sidebar-profile-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFFFFF;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.sidebar-profile-role {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar-profile-caret {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.15s;
+}
+
+.sidebar-profile.menu-open .sidebar-profile-caret,
+.sidebar-profile:hover .sidebar-profile-caret {
+    transform: rotate(180deg);
+}
+
+.sidebar-profile-menu {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: calc(100% + 6px);
+    background: #FFFFFF;
+    border: 1px solid var(--color-green-border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    padding: 6px;
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 30;
+}
+
+.sidebar-profile:hover .sidebar-profile-menu,
+.sidebar-profile.menu-open .sidebar-profile-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.sidebar-profile-logout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 9px 10px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #DC2626;
+    cursor: pointer;
+    text-align: left;
+}
+
+.sidebar-profile-logout:hover {
+    background: var(--status-out-bg);
+}
+
+.sidebar-profile-logout svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* ✅ COLLAPSE TOGGLE — floats half outside the sidebar, vertically
+   centered on the icon list. Hidden by default, revealed on hover
+   of the sidebar or the button itself; always visible once
+   collapsed so it's easy to find again. */
+.sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    right: -14px;
+    transform: translateY(-50%) scale(.85);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid var(--color-green-border);
+    color: var(--color-green-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    opacity: 0;
+    transition: opacity 0.16s ease, transform 0.16s ease, background 0.15s, color 0.15s;
+    z-index: 6;
+}
+
+.sidebar:hover .sidebar-toggle,
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+}
+
+.sidebar-toggle:hover {
+    background: var(--color-forest);
+    color: #FFFFFF;
+    border-color: var(--color-forest);
+}
+
+.sidebar-toggle svg {
+    transition: transform 0.24s cubic-bezier(.4,0,.2,1);
+}
+
+.sidebar.collapsed .sidebar-toggle svg {
+    transform: rotate(180deg);
+}
+
+/* ✅ COLLAPSED STATE — shrinks to an icon-only rail. Labels, group
+   headers, and the profile name/role fade out; icons + avatar stay. */
+.sidebar.collapsed {
+    width: 76px;
+}
+
+.sidebar.collapsed .sidebar-brand-text,
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .nav-group-label,
+.sidebar.collapsed .sidebar-profile-info,
+.sidebar.collapsed .sidebar-profile-caret {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-brand {
+    justify-content: center;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .sidebar-profile-trigger {
+    justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-profile-menu {
+    left: 100%;
+    right: auto;
+    bottom: 8px;
+    margin-left: 8px;
+    width: 180px;
+}
+
+.main-area {
+    flex: 1;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.topbar {
+    background: var(--color-forest);
+    color: #FFFFFF;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbar h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+    color: #FFFFFF;
+}
+
+.content {
+    padding: 24px;
+    flex: 1;
+}
+
+.page-section { display: none; }
+.page-section.active-section { display: block; }
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--color-green-card);
+    border: 1px solid var(--color-green-border);
+    border-top: 4px solid var(--color-green-border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* ✅ Small colored accent strip along the top edge of each stat
+   card, matching that card's own icon color — just enough color
+   on the card itself, not a full repaint. */
+.stat-card-products    { border-top-color: var(--status-instock); }
+.stat-card-categories  { border-top-color: var(--accent-blue); }
+.stat-card-locations   { border-top-color: var(--accent-plum); }
+.stat-card-adjustments { border-top-color: var(--status-low); }
+.stat-card-returns     { border-top-color: var(--status-out); }
+
+/* ✅ Colored icon per stat card, same idea as admin's stat-card-*
+   variants — each metric gets its own accent so the dashboard
+   isn't monochrome. */
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    flex-shrink: 0;
+    background: var(--color-forest);
+}
+
+.stat-card-products .stat-icon   { background: var(--status-instock); }
+.stat-card-categories .stat-icon { background: var(--accent-blue); }
+.stat-card-locations .stat-icon  { background: var(--accent-plum); }
+.stat-card-adjustments .stat-icon{ background: var(--status-low); }
+.stat-card-returns .stat-icon    { background: var(--status-out); }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--color-green-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--color-green-text);
+}
+
+.clickable-card {
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.clickable-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ✅ CHARTS — same panel language as the tables below, two side by
+   side above the low-stock/recent-activity grid. */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.chart-panel .panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.chart-panel h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-green-text);
+}
+
+.panel-subtitle {
+    font-size: 12px;
+    color: var(--color-green-muted);
+}
+
+/* ✅ RESPONSIVE FIX — the core bug: CSS Grid items default to
+   min-width:auto, so a <canvas> or a many-column <table> can hold
+   its whole grid column at that content width and refuse to
+   shrink, even though the grid track itself is percentage-based.
+   That's why charts/tables looked "not responsive" — they were
+   sized correctly at first paint, but never scaled back down when
+   the window/sidebar changed. min-width:0 on the grid items lets
+   them shrink properly; Chart.js's own resize + the ResizeObserver
+   added in inventory.js then take care of redrawing the canvas. */
+.panel {
+    min-width: 0;
+}
+
+.chart-container {
+    position: relative;
+    height: 220px;
+    min-width: 0;
+    width: 100%;
+}
+
+.chart-container-doughnut {
+    height: 200px;
+    min-width: 0;
+    width: 100%;
+}
+
+.chart-container canvas,
+.chart-container-doughnut canvas {
+    max-width: 100%;
+}
+
+.stat-info {
+    min-width: 0;
+}
+
+.stat-label,
+.stat-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ✅ Tables get their own horizontal scroller instead of forcing
+   the whole page to scroll sideways or squashing columns unreadably
+   on narrow screens. The table keeps a sane minimum width so
+   columns stay legible; the wrapper scrolls, the page doesn't. */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius);
+}
+
+.table-responsive .data-table {
+    min-width: 560px;
+}
+
+@media (max-width: 900px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-container { height: 200px; }
+    .chart-container-doughnut { height: 190px; }
+}
+
+@media (max-width: 600px) {
+    .chart-container { height: 180px; }
+    .chart-container-doughnut { height: 200px; }
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background: var(--color-green-card);
+    border: 1px solid var(--color-green-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.panel h3 {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-green-text);
+}
+
+.section-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.section-toolbar h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    padding: 9px 14px;
+    border: 1px solid var(--color-green-border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-size: 13.5px;
+    color: var(--color-green-text);
+    min-width: 220px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-input::placeholder { color: #6B8A76; }
+
+.search-input:focus {
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px rgba(18, 51, 31, 0.12);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-green-card);
+    border: 1px solid var(--color-green-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-size: 13.5px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 11px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-green-border);
+}
+
+.data-table th {
+    background: #E4F6EC;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-green-muted);
+    font-weight: 700;
+}
+
+.data-table tbody tr { transition: background 0.12s; }
+.data-table tbody tr:hover { background: rgba(18, 51, 31, 0.06); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.empty-row {
+    text-align: center;
+    color: var(--color-green-muted);
+    padding: 24px;
+    font-style: italic;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #FFFFFF;
+    color: var(--color-forest);
+    border-color: var(--color-forest);
+}
+
+.btn-primary:hover {
+    background: var(--color-forest);
+    color: #FFFFFF;
+}
+
+.btn-outline,
+.btn-outline-secondary {
+    background: #FFFFFF;
+    color: var(--color-forest);
+    border: 1px solid var(--color-green-border);
+}
+
+.btn-outline:hover,
+.btn-outline-secondary:hover {
+    background: #E4F6EC;
+    border-color: var(--color-forest);
+}
+
+.btn-outline-light {
+    background: transparent;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-light:hover {
+    background: #FFFFFF;
+    color: var(--color-forest);
+}
+
+.btn-danger {
+    background: #DC2626;
+    color: #FFFFFF;
+    border-color: #DC2626;
+}
+
+.btn-danger:hover { background: #B91C1C; }
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--color-green-border);
+    color: var(--color-green-text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12.5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s;
+    margin-right: 4px;
+}
+
+.btn-icon:hover {
+    background: var(--color-forest);
+    color: #FFFFFF;
+    border-color: var(--color-forest);
+}
+
+.btn-icon-danger:hover {
+    background: #DC2626;
+    border-color: #DC2626;
+    color: #FFFFFF;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.badge-green { background: var(--status-instock-bg); color: var(--status-instock-text); }
+.badge-amber { background: var(--status-low-bg); color: var(--status-low-text); }
+.badge-red   { background: var(--status-out-bg); color: var(--status-out-text); }
+.badge-gray  { background: #E5E7EB; color: #374151; }
+
+.tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--color-green-border);
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-green-muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+}
+
+.tab-btn:hover { color: var(--color-forest); }
+
+.tab-btn.active {
+    color: var(--color-forest);
+    border-bottom-color: var(--color-forest);
+    background: rgba(18, 51, 31, 0.06);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active-tab { display: block; }
+
+.status-select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--color-green-border);
+    background: #FFFFFF;
+    font-size: 12.5px;
+    color: var(--color-green-text);
+    margin-right: 6px;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 46, 22, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+    background: var(--color-green-card);
+    border: 1px solid var(--color-green-border);
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-green-border);
+    background: #E4F6EC;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-green-text);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-green-muted);
+    padding: 0 4px;
+}
+
+.modal-close:hover { color: var(--color-forest); }
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--color-green-border);
+    background: #F8FEFB;
+}
+
+.modal-loading {
+    color: var(--color-green-muted);
+    font-style: italic;
+    text-align: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-green-text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 9px 12px;
+    border: 1px solid var(--color-green-border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-size: 13.5px;
+    color: var(--color-green-text);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px rgba(18, 51, 31, 0.12);
+}
+
+.field-hint {
+    font-size: 11.5px;
+    color: var(--color-green-muted);
+    font-style: italic;
+}
+
+.confirm-modal-box { max-width: 420px; }
+
+.confirm-message {
+    font-size: 14px;
+    color: var(--color-green-text);
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+
+.confirm-warning {
+    font-size: 12.5px;
+    color: var(--color-green-muted);
+    margin: 0;
+    font-style: italic;
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 46, 22, 0.5);
+    z-index: 40;
+}
+
+.sidebar-backdrop.open { display: block; }
+
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.hamburger-btn:hover { background: rgba(255, 255, 255, 0.12); }
+
+.hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #FFFFFF;
+    border-radius: 2px;
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    background: var(--color-green-card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border: 1px solid var(--color-green-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 160px;
+}
+
+.filter-field label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-green-muted);
+    font-weight: 600;
+}
+
+.filter-field input,
+.filter-field select {
+    padding: 8px 10px;
+    border: 1px solid var(--color-green-border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    font: inherit;
+    font-size: 13px;
+    color: var(--color-green-text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px rgba(18, 51, 31, 0.12);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.filter-count {
+    font-size: 12px;
+    color: var(--color-green-muted);
+    padding: 6px 0;
+    min-height: 20px;
+}
+
+.adj-preview {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--color-green-border);
+    background: #FAFAFA;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+.adj-preview-ok {
+    background: var(--status-instock-bg);
+    color: var(--status-instock-text);
+    border-color: var(--color-green-border);
+}
+
+.adj-preview-increase {
+    background: var(--status-instock-bg);
+    color: var(--status-instock-text);
+    border-color: var(--color-green-border);
+}
+
+.adj-preview-decrease {
+    background: var(--status-low-bg);
+    color: var(--status-low-text);
+    border-color: #F5DEB3;
+}
+
+input[readonly] {
+    background-color: #E4F6EC !important;
+    color: var(--color-green-muted) !important;
+    cursor: not-allowed !important;
+    font-weight: 700;
+}
+
+input[readonly]:focus {
+    box-shadow: none;
+    border-color: var(--color-green-border);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+@media (max-width: 900px) {
+
+    .hamburger-btn { display: flex; }
+
+    .sidebar {
+        position: fixed;
+        top: 0; bottom: 0; left: 0;
+        height: auto;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        z-index: 60;
+    }
+
+    .sidebar.sidebar-open { transform: translateX(0); }
+
+    /* On mobile the sidebar is a full drawer, not a rail — the
+       collapse toggle isn't useful there, so hide it. */
+    .sidebar-toggle { display: none; }
+
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .search-input { min-width: 100%; }
+    .content { padding: 16px; }
+}
+
+@media (max-width: 700px) {
+    .filter-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+    .filter-field { flex: 1 1 100%; }
+}
