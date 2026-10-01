@@ -1,0 +1,185 @@
+/* =========================================================
+   LOGIN PAGE — styles only, works with the original HTML markup
+========================================================= */
+
+:root {
+    --color-green-bg: #D9F5E3;
+    --color-green-card: #F1FDF5;
+    --color-green-border: #A6DDBB;
+    --color-green-text: #052E16;
+    --color-green-muted: #166534;
+    --color-forest: #12331F;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--color-green-bg);
+    color: var(--color-green-text);
+}
+
+.login-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-card {
+    background: var(--color-green-card);
+    border: 1px solid var(--color-green-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Header (logo + title) ---------- */
+
+.login-brand {
+    background: var(--color-forest);
+    padding: 16px 22px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: 12px;
+    align-items: center;
+}
+
+.login-logo {
+    grid-row: 1 / span 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: var(--color-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.login-brand h1 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    align-self: end;
+}
+
+.login-brand p {
+    margin: 2px 0 0;
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.7);
+    align-self: start;
+}
+
+/* ---------- Form ---------- */
+
+#login-form {
+    padding: 22px 22px 0;
+}
+
+#login-form::before {
+    content: "Sign in";
+    display: block;
+    margin-bottom: 18px;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--color-green-text);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-green-text);
+}
+
+.form-group input {
+    padding: 11px 12px;
+    border: 1px solid var(--color-green-border);
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-size: 13.5px;
+    color: var(--color-green-text);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-group input::placeholder {
+    color: #6B7F73;
+}
+
+.form-group input:focus {
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px rgba(18, 51, 31, 0.12);
+}
+
+/* ---------- Button ---------- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    margin-top: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    font-family: inherit;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+}
+
+.btn-primary {
+    background: var(--color-forest);
+    color: #FFFFFF;
+}
+
+.btn-primary:hover {
+    background: #0B2014;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* ---------- Note ---------- */
+
+.login-note {
+    margin: 0;
+    padding: 18px 22px 22px;
+    text-align: center;
+    font-size: 11.5px;
+    line-height: 1.5;
+    font-style: italic;
+    color: var(--color-green-muted);
+}
+
+@media (max-width: 420px) {
+    #login-form { padding: 18px 18px 0; }
+    .login-note { padding: 16px 18px 20px; }
+}
